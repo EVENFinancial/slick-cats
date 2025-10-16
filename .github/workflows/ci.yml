@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ '**' ]
+  workflow_dispatch:
+
+# Cancel previous runs of the same ref (helps when pushing many commits quickly)
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test (aggregated cross projects)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 11
+          cache: sbt
+
+      - name: Cache Coursier & Ivy
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/coursier
+            ~/.ivy2/cache
+            ~/.sbt
+          key: coursier-${{ runner.os }}-${{ hashFiles('**/build.sbt', '**/project/*.sbt', 'version.sbt') }}
+          restore-keys: |
+            coursier-${{ runner.os }}-
+
+      - name: Dependency resolution
+        run: sbt update
+
+      - name: Compile (all projectMatrix rows)
+        run: sbt compile
+
+      - name: Run tests (all projectMatrix rows)
+        run: sbt test
+
+      - name: Test failure diagnostics
+        if: failure()
+        run: |
+          echo 'Some tests failed. Listing failed test targets:'
+          # Print last 200 lines from each subproject test log if present
+          find . -type f -path '*/target/*/test-reports/*.xml' -print | head -n 50 || true
+
+#  docs:
+#    name: MDoc (Scala 3 docs project)
+#    runs-on: ubuntu-latest
+#    # Only run docs on pushes to main/master or manual dispatch to reduce noise
+#    if: github.event_name != 'pull_request'
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Set up Java
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: temurin
+#          java-version: 17
+#          cache: sbt
+#
+#      - name: Cache Coursier & Ivy
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            ~/.cache/coursier
+#            ~/.ivy2/cache
+#            ~/.sbt
+#          key: coursier-${{ runner.os }}-docs-${{ hashFiles('**/build.sbt', '**/project/*.sbt', 'version.sbt') }}
+#          restore-keys: |
+#            coursier-${{ runner.os }}-docs-
+#            coursier-${{ runner.os }}-
+#
+#      - name: Build & validate docs
+#        run: sbt docs/mdoc
