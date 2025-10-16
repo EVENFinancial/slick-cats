@@ -29,6 +29,11 @@ jobs:
           java-version: 11
           cache: sbt
 
+      - name: Install sbt
+        uses: sbt/setup-sbt@v1
+        with:
+          sbt-version: 1.11.2
+
       - name: Cache Coursier & Ivy
         uses: actions/cache@v4
         with:
