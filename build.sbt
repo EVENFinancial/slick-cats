@@ -6,6 +6,9 @@ val scala212 = "2.12.19"
 val scala213 = "2.13.16"
 val scala3   = "3.3.6"
 
+// Only enable this for local testing
+//ThisBuild / Test / parallelExecution := false
+
 // Build-wide settings
 ThisBuild / organization := "com.rms.miu"
 ThisBuild / scalaVersion := scala213
@@ -84,7 +87,7 @@ lazy val slickcats =
         "org.typelevel" %% "cats-core" % catsVersion,
         "org.typelevel" %% "scalac-compat-annotation" % "0.1.4",
         "org.typelevel" %% "cats-laws" % catsVersion % Test,
-        "org.typelevel" %% "discipline-scalatest" % "2.2.0" % Test,
+        "org.typelevel" %% "discipline-scalatest" % "2.3.0" % Test,
         "org.scalatest" %% "scalatest" % "3.2.14" % Test,
         "org.scalacheck" %% "scalacheck" % "1.17.0" % Test,
         "org.typelevel" %% "scalac-compat-annotation" % "0.1.3"
