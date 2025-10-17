@@ -74,6 +74,8 @@ trait DBIOInstances extends DBIOInstances0 {
 private[slickcats] abstract class DBIOCoflatMap(implicit ec: ExecutionContext) extends CoflatMap[DBIO] {
   def map[A, B](fa: DBIO[A])(f: A => B): DBIO[B] = fa.map(f)
   def coflatMap[A, B](fa: DBIO[A])(f: DBIO[A] => B): DBIO[B] = DBIO.from(Future(f(fa)))
+  override def coflatten[A](fa: DBIO[A]): DBIO[DBIO[A]] =
+    DBIO.successful(fa)
 }
 
 private[slickcats] class DBIOSemigroup[A: Semigroup](implicit ec: ExecutionContext) extends Semigroup[DBIO[A]] {
