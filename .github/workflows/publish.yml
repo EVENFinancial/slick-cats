@@ -1,0 +1,36 @@
+name: Publish to GitHub Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 11
+        cache: sbt
+
+    - name: Install sbt
+      uses: sbt/setup-sbt@v1
+      with:
+        sbt-version: 1.11.2
+    
+    - name: Publish to GitHub Packages
+      run: sbt release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

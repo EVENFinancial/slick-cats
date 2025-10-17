@@ -1,5 +1,8 @@
-SlickCats
-=========
+SlickCats (Fork)
+================
+
+
+> **Note**: This is a fork of the original [SlickCats](https://github.com/RMSone/slick-cats) project with updated dependencies and extended compatibility matrix.
 
 [Cats](https://github.com/typelevel/cats) instances for [Slick's](http://slick.typesafe.com/) `DBIO` including:
 * Monad
@@ -15,23 +18,40 @@ SlickCats
 
 ## Using
 
-To add *slick-cats* dependency to a project, add the following to your build definition:
+This fork provides separate artifacts for different Slick versions to ensure compatibility. Add the appropriate dependency to your build definition:
 
 ```scala
-libraryDependencies += "com.rms.miu" %% "slick-cats" % version
+// For Slick 3.3.x
+libraryDependencies += "com.rms.miu" %% "slickcats-slick3-3" % "0.11.0" // Scala 2.12/2.13
+
+// For Slick 3.4.x  
+libraryDependencies += "com.rms.miu" %% "slickcats-slick3-4" % "0.11.0" // Scala 2.12/2.13
+
+// For Slick 3.5.x
+libraryDependencies += "com.rms.miu" %% "slickcats-slick3-5" % "0.11.0" // Scala 2.12/2.13/3.3.x (LTS)
 ```
 
-Because of possible binary incompatibilities, here are the dependency versions used in each release:
+### Compatibility Matrix
 
-| slick-cats version | slick version | cats version |
-|:------------------:|:-------------:|:------------:|
-|       0.10.5       |     3.4.1     |    2.9.0     |
-|       0.10.4       |     3.3.3     |    2.3.1     |
-|       0.10.3       |     3.3.2     |    2.2.0     |
-|       0.10.2       |     3.3.2     |    2.1.0     |
-|       0.10.1       |     3.3.2     |    2.0.0     |
+This fork supports multiple Slick and Scala version combinations:
 
-Artifacts are publicly available on Maven Central starting from version *0.6*.
+| Artifact | Slick Version | Scala Versions | Cats Version |
+|:---------|:-------------:|:--------------:|:------------:|
+| `slickcats-slick3-3` | 3.3.3 | 2.12.19, 2.13.16 | 2.13.0 |
+| `slickcats-slick3-4` | 3.4.1 | 2.12.19, 2.13.16 | 2.13.0 |
+| `slickcats-slick3-5` | 3.5.2 | 2.12.19, 2.13.16, 3.3.6 | 2.13.0 |
+
+### Publishing
+
+Currently published to GitHub Packages. Maven Central publishing is planned for future releases.
+
+To use GitHub Packages, add the following resolver to your `build.sbt`:
+
+```scala
+resolvers += "GitHub Package Registry" at "https://maven.pkg.github.com/EVENFinancial/slick-cats"
+```
+
+You'll also need to authenticate with GitHub Packages. See [GitHub's documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry) for setup instructions.
 
 ## Accessing the Instances
 
@@ -126,6 +146,16 @@ monad(success)
 ```
 
 will compile fine.
+
+## Fork Changes
+
+This fork includes the following improvements over the original:
+
+- **Extended Compatibility**: Support for Slick 3.3.x, 3.4.x, and 3.5.x
+- **Scala 3 Support**: Full compatibility with Scala 3.3.6 LTS
+- **Updated Dependencies**: Latest Cats 2.13.0 and modern Scala versions
+- **Matrix Build**: Separate artifacts for each Slick/Scala combination
+- **Comprehensive Testing**: Property-based testing with Cats laws verification
 
 ## Extras
 

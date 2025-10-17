@@ -1,6 +1,8 @@
 import SlickVersionAxis._
 import sbt._
 import sbtprojectmatrix.ProjectMatrixPlugin.autoImport._
+import sbtrelease.ReleasePlugin.autoImport._
+
 
 val scala212 = "2.12.19"
 val scala213 = "2.13.16"
@@ -12,19 +14,29 @@ val scala3   = "3.3.6"
 // Build-wide settings
 ThisBuild / organization := "com.rms.miu"
 ThisBuild / scalaVersion := scala213
-// Modern Sonatype publishing pattern (avoid deprecated sonatypeStaging)
-ThisBuild / publishTo := {
-  if (isSnapshot.value) Some(Resolver.sonatypeCentralSnapshots)
-  else Some(Opts.resolver.sonatypeStaging)
-}
+
+// GitHub Packages publishing configuration
+ThisBuild / publishTo := Some("GitHub Package Registry" at "https://maven.pkg.github.com/EVENFinancial/slick-cats")
+
+// GitHub authentication (requires GITHUB_TOKEN environment variable)
+ThisBuild / credentials += Credentials(
+  "GitHub Package Registry",
+  "maven.pkg.github.com",
+  "EVENFinancial", // GitHub username
+  sys.env.getOrElse("GITHUB_TOKEN", "")
+)
+
+// Additional GitHub Packages settings
+ThisBuild / publishMavenStyle := true
+ThisBuild / versionScheme := Some("early-semver")
 
 Global / excludeLintKeys += publishMavenStyle
 ThisBuild / licenses += ("BSD New", url("https://opensource.org/licenses/BSD-3-Clause"))
-ThisBuild / homepage := Some(url("https://github.com/rmsone/slick-cats"))
+ThisBuild / homepage := Some(url("https://github.com/EVENFinancial/slick-cats"))
 ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/rmsone/slick-cats"),
-    "scm:git@github.com:rmsone/slick-cats.git"
+    url("https://github.com/EVENFinancial/slick-cats"),
+    "scm:git@github.com:EVENFinancial/slick-cats.git"
   )
 )
 ThisBuild / developers := List(
@@ -76,12 +88,30 @@ val slick33ScalaVersions = Seq(scala212, scala213)          // Slick 3.3.x: Scal
 val slick34ScalaVersions = Seq(scala212, scala213)          // Slick 3.4.x: Scala 2.12 & 2.13 only (no Scala 3)
 val slick35ScalaVersions = Seq(scala212, scala213, scala3)  // Slick 3.5.x: retains Scala 2.12 & adds Scala 3
 
+// sbt-release configuration
+import ReleaseTransformations._
+
+ThisBuild / releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  publishArtifacts,
+  setNextVersion,
+  commitNextVersion,
+  pushChanges
+)
+
 lazy val slickcats =
   projectMatrix
     .in(file("slick-cats"))
     .settings(commonSettings)
     .settings(
-      name := "slick-cats",
+      // Artifact name will be modified by SlickVersionAxis to include version suffix
+      name := "slickcats",
       description := "Cats instances for Slick's DBIO",
       libraryDependencies ++= Seq(
         "org.typelevel" %% "cats-core" % catsVersion,
