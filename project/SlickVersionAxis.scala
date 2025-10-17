@@ -31,6 +31,7 @@ object SlickVersionAxis {
       * adjust module naming.
       */
     def slickRow(
+        module: String,
         slickAxis: SlickVersionAxis,
         scalaVersions: Seq[String],
         settings: Def.SettingsDefinition*
@@ -42,7 +43,7 @@ object SlickVersionAxis {
           // Base module name now without hyphen between slick and cats per user request
           moduleName := "slickcats" + slickAxis.moduleNameSuffix,
           libraryDependencies += ("com.typesafe.slick" %% "slick" % slickAxis.slickVersion),
-          Compile / unmanagedSourceDirectories += ((LocalRootProject / baseDirectory).value / "slick-cats" / "src" / "main" / s"slick${slickAxis.major}${slickAxis.minor}" / "scala")
+          Compile / unmanagedSourceDirectories += ((LocalRootProject / baseDirectory).value / "slick-cats" / "src" / "main" / module / "scala")
         ).settings(settings: _*)
       )
   }
