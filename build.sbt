@@ -10,21 +10,22 @@ val scala3   = "3.3.6"
 //ThisBuild / Test / parallelExecution := false
 
 // Build-wide settings
-ThisBuild / organization := "com.rms.miu"
+ThisBuild / organization := "tech.engine"
 ThisBuild / scalaVersion := scala213
-// Modern Sonatype publishing pattern (avoid deprecated sonatypeStaging)
+
 ThisBuild / publishTo := {
-  if (isSnapshot.value) Some(Resolver.sonatypeCentralSnapshots)
-  else Some(Opts.resolver.sonatypeStaging)
+  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
+  if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
+  else localStaging.value
 }
 
 Global / excludeLintKeys += publishMavenStyle
 ThisBuild / licenses += ("BSD New", url("https://opensource.org/licenses/BSD-3-Clause"))
-ThisBuild / homepage := Some(url("https://github.com/rmsone/slick-cats"))
+ThisBuild / homepage := Some(url("https://github.com/EVENFinancial/slick-cats"))
 ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/rmsone/slick-cats"),
-    "scm:git@github.com:rmsone/slick-cats.git"
+    url("https://github.com/EVENFinancial/slick-cats"),
+    "scm:git@github.com:EVENFinancial/slick-cats.git"
   )
 )
 ThisBuild / developers := List(

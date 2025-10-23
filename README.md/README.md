@@ -1,5 +1,7 @@
-SlickCats
-=========
+SlickCats (Fork)
+================
+
+**Note**: This is a fork of the original [SlickCats](https://github.com/RMSone/slick-cats) project with updated dependencies and extended compatibility matrix.
 
 [Cats](https://github.com/typelevel/cats) instances for [Slick's](http://slick.typesafe.com/) `DBIO` including:
 * Monad
@@ -15,21 +17,28 @@ SlickCats
 
 ## Using
 
-To add *slick-cats* dependency to a project, add the following to your build definition:
+This fork provides separate artifacts for different Slick versions to ensure compatibility. Add the appropriate dependency to your build definition:
 
 ```scala
-libraryDependencies += "com.rms.miu" %% "slick-cats" % version
+// For Slick 3.3.x
+libraryDependencies += "tech.engine" %% "slickcats-slick3-3" % "0.11.0-SNAPSHOT" // Scala 2.12/2.13
+
+// For Slick 3.4.x  
+libraryDependencies += "tech.engine" %% "slickcats-slick3-4" % "0.11.0-SNAPSHOT" // Scala 2.12/2.13
+
+// For Slick 3.5.x
+libraryDependencies += "tech.engine" %% "slickcats-slick3-5" % "0.11.0-SNAPSHOT" // Scala 2.12/2.13/3.3.x (LTS)
 ```
 
 Because of possible binary incompatibilities, here are the dependency versions used in each release:
 
-| slick-cats version | slick version | cats version |
-|:------------------:|:-------------:|:------------:|
-|       0.10.5       |     3.4.1     |    2.9.0     |
-|       0.10.4       |     3.3.3     |    2.3.1     |
-|       0.10.3       |     3.3.2     |    2.2.0     |
-|       0.10.2       |     3.3.2     |    2.1.0     |
-|       0.10.1       |     3.3.2     |    2.0.0     |
+This fork supports multiple Slick and Scala version combinations:
+
+| Artifact             | Release              | Slick Version |     Scala Versions      | Cats Version |
+|:---------------------|:--------------------:|:-------------:|:-----------------------:|:------------:|
+| `slickcats-slick3-3` | 0.11.0-SNAPSHOT      |     3.3.3     |    2.12.19, 2.13.16     |    2.13.0    |
+| `slickcats-slick3-4` | 0.11.0-SNAPSHOT      |     3.4.1     |    2.12.19, 2.13.16     |    2.13.0    |
+| `slickcats-slick3-5` | 0.11.0-SNAPSHOT      |     3.5.2     | 2.12.19, 2.13.16, 3.3.6 |    2.13.0    |
 
 Artifacts are publicly available on Maven Central starting from version *0.6*.
 
