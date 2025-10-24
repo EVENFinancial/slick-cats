@@ -23,7 +23,7 @@ This fork provides separate artifacts for different Slick versions to ensure com
 // For Slick 3.3.x
 libraryDependencies += "tech.engine" %% "slickcats-slick3-3" % "0.11.0-SNAPSHOT" // Scala 2.12/2.13
 
-// For Slick 3.4.x  
+// For Slick 3.4.x
 libraryDependencies += "tech.engine" %% "slickcats-slick3-4" % "0.11.0-SNAPSHOT" // Scala 2.12/2.13
 
 // For Slick 3.5.x
