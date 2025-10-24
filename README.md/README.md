@@ -28,6 +28,9 @@ libraryDependencies += "tech.engine" %% "slickcats-slick3-4" % "0.11.0-SNAPSHOT"
 
 // For Slick 3.5.x
 libraryDependencies += "tech.engine" %% "slickcats-slick3-5" % "0.11.0-SNAPSHOT" // Scala 2.12/2.13/3.3.x (LTS)
+
+// For Slick 3.6.x
+libraryDependencies += "tech.engine" %% "slickcats-slick3-6" % "0.11.0-SNAPSHOT" // Scala 2.12/2.13/3.3.x (LTS)
 ```
 
 Because of possible binary incompatibilities, here are the dependency versions used in each release:
@@ -39,6 +42,7 @@ This fork supports multiple Slick and Scala version combinations:
 | `slickcats-slick3-3` | 0.11.0-SNAPSHOT      |     3.3.3     |    2.12.19, 2.13.16     |    2.13.0    |
 | `slickcats-slick3-4` | 0.11.0-SNAPSHOT      |     3.4.1     |    2.12.19, 2.13.16     |    2.13.0    |
 | `slickcats-slick3-5` | 0.11.0-SNAPSHOT      |     3.5.2     | 2.12.19, 2.13.16, 3.3.6 |    2.13.0    |
+| `slickcats-slick3-6` | 0.11.0-SNAPSHOT      |     3.5.2     | 2.12.19, 2.13.16, 3.3.6 |    2.13.0    |
 
 Artifacts are publicly available on Maven Central starting from version *0.6*.
 

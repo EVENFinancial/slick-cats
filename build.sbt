@@ -72,10 +72,12 @@ val catsVersion = "2.13.0"
 val slick33 = SlickVersionAxis("3.3.3")
 val slick34 = SlickVersionAxis("3.4.1")
 val slick35 = SlickVersionAxis("3.5.2")
+val slick36 = SlickVersionAxis("3.6.1")
 
 val slick33ScalaVersions = Seq(scala212, scala213)          // Slick 3.3.x: Scala 2.12 & 2.13 only
 val slick34ScalaVersions = Seq(scala212, scala213)          // Slick 3.4.x: Scala 2.12 & 2.13 only (no Scala 3)
 val slick35ScalaVersions = Seq(scala212, scala213, scala3)  // Slick 3.5.x: retains Scala 2.12 & adds Scala 3
+val slick36ScalaVersions = Seq(scala212, scala213, scala3)  // Slick 3.6.x: retains Scala 2.12 & adds Scala 3
 
 lazy val slickcats =
   projectMatrix
@@ -96,10 +98,11 @@ lazy val slickcats =
     .slickRow(slick33, slick33ScalaVersions, publish / skip := false)
     .slickRow(slick34, slick34ScalaVersions, publish / skip := false)
     .slickRow(slick35, slick35ScalaVersions, publish / skip := false)
+    .slickRow(slick36, slick36ScalaVersions, publish / skip := false)
 
 lazy val docs = (project in file("slick-cats-docs"))
   .enablePlugins(MdocPlugin)
-  .dependsOn(LocalProject("slickcats-slick3-53")) // Scala 3 row of Slick 3.5 line
+  .dependsOn(LocalProject("slickcats-slick3-63")) // Scala 3 row of Slick 3.5 line
   .settings(commonSettings)
   .settings(
     name := "slick-cats-docs",
