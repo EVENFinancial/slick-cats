@@ -10,21 +10,22 @@ val scala3   = "3.3.6"
 //ThisBuild / Test / parallelExecution := false
 
 // Build-wide settings
-ThisBuild / organization := "com.rms.miu"
+ThisBuild / organization := "tech.engine"
 ThisBuild / scalaVersion := scala213
-// Modern Sonatype publishing pattern (avoid deprecated sonatypeStaging)
+
 ThisBuild / publishTo := {
-  if (isSnapshot.value) Some(Resolver.sonatypeCentralSnapshots)
-  else Some(Opts.resolver.sonatypeStaging)
+  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
+  if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
+  else localStaging.value
 }
 
 Global / excludeLintKeys += publishMavenStyle
 ThisBuild / licenses += ("BSD New", url("https://opensource.org/licenses/BSD-3-Clause"))
-ThisBuild / homepage := Some(url("https://github.com/rmsone/slick-cats"))
+ThisBuild / homepage := Some(url("https://github.com/EVENFinancial/slick-cats"))
 ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/rmsone/slick-cats"),
-    "scm:git@github.com:rmsone/slick-cats.git"
+    url("https://github.com/EVENFinancial/slick-cats"),
+    "scm:git@github.com:EVENFinancial/slick-cats.git"
   )
 )
 ThisBuild / developers := List(
@@ -71,10 +72,12 @@ val catsVersion = "2.13.0"
 val slick33 = SlickVersionAxis("3.3.3")
 val slick34 = SlickVersionAxis("3.4.1")
 val slick35 = SlickVersionAxis("3.5.2")
+val slick36 = SlickVersionAxis("3.6.1")
 
 val slick33ScalaVersions = Seq(scala212, scala213)          // Slick 3.3.x: Scala 2.12 & 2.13 only
 val slick34ScalaVersions = Seq(scala212, scala213)          // Slick 3.4.x: Scala 2.12 & 2.13 only (no Scala 3)
 val slick35ScalaVersions = Seq(scala212, scala213, scala3)  // Slick 3.5.x: retains Scala 2.12 & adds Scala 3
+val slick36ScalaVersions = Seq(scala212, scala213, scala3)  // Slick 3.6.x: retains Scala 2.12 & adds Scala 3
 
 lazy val slickcats =
   projectMatrix
@@ -95,10 +98,11 @@ lazy val slickcats =
     .slickRow(slick33, slick33ScalaVersions, publish / skip := false)
     .slickRow(slick34, slick34ScalaVersions, publish / skip := false)
     .slickRow(slick35, slick35ScalaVersions, publish / skip := false)
+    .slickRow(slick36, slick36ScalaVersions, publish / skip := false)
 
 lazy val docs = (project in file("slick-cats-docs"))
   .enablePlugins(MdocPlugin)
-  .dependsOn(LocalProject("slickcats-slick3-53")) // Scala 3 row of Slick 3.5 line
+  .dependsOn(LocalProject("slickcats-slick3-63")) // Scala 3 row of Slick 3.5 line
   .settings(commonSettings)
   .settings(
     name := "slick-cats-docs",
