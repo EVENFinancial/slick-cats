@@ -107,6 +107,10 @@ lazy val docs = (project in file("slick-cats-docs"))
   .settings(
     name := "slick-cats-docs",
     publish / skip := true,
+    // Read markdown from the repo's /docs directory
+    mdocIn  := (LocalRootProject / baseDirectory).value / "docs",
+    // Write processed output to the repo root (so docs/README.md → ./README.md)
+    mdocOut := (LocalRootProject / baseDirectory).value,
     scalaVersion := scala3,
     scalacOptions --= Seq("-Xfatal-warnings")
   )
